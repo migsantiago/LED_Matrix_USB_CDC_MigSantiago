@@ -14,7 +14,7 @@ namespace LED_Matrix_CDC
         /**********************************************************************************************************************************************/
         /* Objects */
 
-        static Main_Form main_form = new Main_Form();
+        static Main_Form main_form;
 
         public enum Matrix_Rotation_T
         {

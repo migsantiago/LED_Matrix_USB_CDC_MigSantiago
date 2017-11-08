@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO.Ports;
 
 using Microsoft.WindowsAPICodePack.Shell;
 
@@ -39,9 +40,73 @@ namespace LED_Matrix_CDC
         //-------------------------------------------------------------------------------------------------------------------
         // Functions
 
+        /// <summary>
+        /// Pass arguments to the constructor
+        /// </summary>
+        /// <param name="args">
+        ///     [0] COM port to use in int, example: "4"
+        ///     [1] Send time automatically, true if yes, false if not; example: "true"
+        ///     [2] Set rotation automatically, use 0, 90, 180 or 270; example "180"
+        /// </param>
+        public Main_Form(String[] args)
+        {
+            if (args.Length != 0)
+            {
+                CustomizeLaunch(args);
+                Close();
+            }
+        }
+
         public Main_Form()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Customize the execution, refer to the constructor details
+        /// </summary>
+        /// <param name="args"></param>
+        private void CustomizeLaunch(String[] args)
+        {
+            /* Initialize the Process Event class */
+            Process_Ev.Set_Main_Form_Ref(this);
+
+            serialPort1 = new SerialPort();
+            try
+            {
+                serialPort1.PortName = "COM" + args[0];
+                serialPort1.Open();
+
+                if ((args[1].Length != 0) && (args[1] == "true"))
+                {
+                    Process_Ev.Set_PIC_Time();
+                    Process_Ev.Draw_Time();
+                }
+
+                if (args[2].Length != 0)
+                {
+                    int number = 0;
+                    Process_Ev.Matrix_Rotation_T rot;
+                    Int32.TryParse(args[2], out number);
+
+                    switch (number)
+                    {
+                        case 0: rot = Process_Ev.Matrix_Rotation_T.ROTATE_0_DEG; break;
+                        case 90: rot = Process_Ev.Matrix_Rotation_T.ROTATE_90_DEG; break;
+                        case 180: rot = Process_Ev.Matrix_Rotation_T.ROTATE_180_DEG; break;
+                        case 270: rot = Process_Ev.Matrix_Rotation_T.ROTATE_270_DEG; break;
+                        default: rot = Process_Ev.Matrix_Rotation_T.ROTATE_0_DEG; break;
+                    }
+
+                    Process_Ev.Set_Matrix_Rotation(rot);
+                }
+
+                serialPort1.Close();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void Main_Form_Load(object sender, EventArgs e)
