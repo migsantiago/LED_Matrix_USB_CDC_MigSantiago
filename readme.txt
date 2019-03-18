@@ -1,5 +1,5 @@
 Hello
-This is code which is provided by Santiago Villafuerte (san.link@yahoo.com.mx).
+This is code which is provided by Santiago Villafuerte.
 Use at your own risk. I am NOT responsible for the use of the code in anyway.
 You may modify the GIT code if it improves the functionality or adds new features.
 Please let me know if you do so.

@@ -4,18 +4,13 @@
  * -----------------------------------------------------------------*/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.WindowsAPICodePack.Shell;
 
 namespace LED_Matrix_CDC
 {
-    public partial class About : GlassForm
+    public partial class About : Form
     {
         public About()
         {
@@ -35,7 +30,6 @@ namespace LED_Matrix_CDC
                 + "from MigSantiago.com\n"
                 + "Use this software AT YOUR OWN RISK.\n"
                 + "Author: Santiago Villafuerte\n"
-                + "Email: san.link@yahoo.com.mx\n"
                 + "Twitter: @migsantiagov";
         }
     }

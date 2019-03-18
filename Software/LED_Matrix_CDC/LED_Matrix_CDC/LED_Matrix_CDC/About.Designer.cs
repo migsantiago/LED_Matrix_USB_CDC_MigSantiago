@@ -31,13 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
             this.lblAbout = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblAbout
             // 
             this.lblAbout.AutoSize = true;
+            this.lblAbout.BackColor = System.Drawing.SystemColors.Control;
+            this.lblAbout.ForeColor = System.Drawing.Color.Black;
             this.lblAbout.Location = new System.Drawing.Point(12, 9);
             this.lblAbout.Name = "lblAbout";
             this.lblAbout.Size = new System.Drawing.Size(35, 13);
@@ -46,7 +46,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(105, 108);
+            this.btnOK.Location = new System.Drawing.Point(180, 115);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 1;
@@ -54,31 +54,20 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.LightGray;
-            this.panel1.Controls.Add(this.btnOK);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(284, 141);
-            this.panel1.TabIndex = 2;
-            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(284, 141);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(267, 150);
+            this.Controls.Add(this.btnOK);
             this.Controls.Add(this.lblAbout);
-            this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "About";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About";
             this.TransparencyKey = System.Drawing.Color.LightGray;
             this.Load += new System.EventHandler(this.About_Load);
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -88,6 +77,5 @@
 
         private System.Windows.Forms.Label lblAbout;
         private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.Panel panel1;
     }
 }

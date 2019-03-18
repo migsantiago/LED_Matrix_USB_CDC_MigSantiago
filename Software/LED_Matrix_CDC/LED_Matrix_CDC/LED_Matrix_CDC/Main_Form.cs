@@ -16,7 +16,7 @@ using Microsoft.WindowsAPICodePack.Shell;
 
 namespace LED_Matrix_CDC
 {
-    public partial class Main_Form : GlassForm
+    public partial class Main_Form : Form
     {
         //-------------------------------------------------------------------------------------------------------------------
         // Objects
@@ -103,7 +103,7 @@ namespace LED_Matrix_CDC
 
                 serialPort1.Close();
             }
-            catch (Exception ex)
+            catch
             {
 
             }
@@ -114,6 +114,7 @@ namespace LED_Matrix_CDC
             this.Text = System.AppDomain.CurrentDomain.FriendlyName + " v" + Application.ProductVersion;
             About about = new About();
             about.ShowDialog();
+            about.Close();
 
             /* Initialize the Process Event class */
             Process_Ev.Set_Main_Form_Ref(this);
@@ -213,11 +214,15 @@ namespace LED_Matrix_CDC
             btnSetPICTime.Enabled = port_is_open;
             btnGameLife.Enabled = port_is_open;
             tblMatrix.Enabled = port_is_open;
+
+            btnPlotFFT.Enabled = port_is_open;
         }
 
         private void btnDrawNumber_Click(object sender, EventArgs e)
         {
             Byte number;
+
+            Process_Ev.Disable_Audio_FFT();
 
             if (Byte.TryParse(txtDrawNumber.Text, out number))
             {
@@ -248,17 +253,20 @@ namespace LED_Matrix_CDC
 
         private void btnSetPICTime_Click(object sender, EventArgs e)
         {
+            Process_Ev.Disable_Audio_FFT();
             Process_Ev.Set_PIC_Time();
             Process_Ev.Draw_Time();
         }
 
         private void btnRotate_Click(object sender, EventArgs e)
         {
+            Process_Ev.Disable_Audio_FFT();
             Process_Ev.Set_Matrix_Rotation((Process_Ev.Matrix_Rotation_T)cmbRotation.SelectedIndex);
         }
 
         private void btnGameLife_Click(object sender, EventArgs e)
         {
+            Process_Ev.Disable_Audio_FFT();
             Process_Ev.Play_Game_Of_Life();
         }
 
@@ -291,6 +299,31 @@ namespace LED_Matrix_CDC
                     Process_Ev.Draw_Raw_Frame(LED_Matrix);
                 }
             }
+        }
+
+        /// <summary>
+        /// The user has enabled the FFT plotting of audio
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnPlotFFT_Click(object sender, EventArgs e)
+        {
+            Double maxLevel = 1.0;
+            Double maxFrequency = 12000D;
+            try
+            {
+                maxLevel = Double.Parse(txtFFTLevel.Text);
+                maxLevel = Math.Pow(10, (maxLevel / 20D)) / 7D;
+
+                maxFrequency = Double.Parse(txtMaxFrequency.Text) * 1000;
+            }
+            catch
+            {
+                maxLevel = 1.0;
+                maxFrequency = 12000D;
+            }
+
+            Process_Ev.Enable_Audio_FFT(maxLevel, maxFrequency);
         }
     }
 }

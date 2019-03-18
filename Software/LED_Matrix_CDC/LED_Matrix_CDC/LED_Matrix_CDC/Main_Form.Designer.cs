@@ -32,17 +32,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_Form));
             this.label1 = new System.Windows.Forms.Label();
             this.txtCOMPort = new System.Windows.Forms.TextBox();
-            this.btnConnect = new System.Windows.Forms.Button();
-            this.btnDisconnect = new System.Windows.Forms.Button();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tblMatrix = new System.Windows.Forms.TableLayoutPanel();
-            this.btnGameLife = new System.Windows.Forms.Button();
-            this.cmbRotation = new System.Windows.Forms.ComboBox();
-            this.btnRotate = new System.Windows.Forms.Button();
-            this.btnSetPICTime = new System.Windows.Forms.Button();
-            this.btnDrawNumber = new System.Windows.Forms.Button();
             this.txtDrawNumber = new System.Windows.Forms.TextBox();
+            this.btnDrawNumber = new System.Windows.Forms.Button();
+            this.btnSetPICTime = new System.Windows.Forms.Button();
+            this.btnRotate = new System.Windows.Forms.Button();
+            this.cmbRotation = new System.Windows.Forms.ComboBox();
+            this.btnGameLife = new System.Windows.Forms.Button();
+            this.tblMatrix = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -92,16 +89,22 @@
             this.label49 = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.chkEnableDraw = new System.Windows.Forms.CheckBox();
-            this.panel1.SuspendLayout();
+            this.btnDisconnect = new System.Windows.Forms.Button();
+            this.btnPlotFFT = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtFFTLevel = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.txtMaxFrequency = new System.Windows.Forms.TextBox();
             this.tblMatrix.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.LightGray;
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label1.BackColor = System.Drawing.SystemColors.Control;
+            this.label1.ForeColor = System.Drawing.Color.Black;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
@@ -114,52 +117,73 @@
             this.txtCOMPort.Name = "txtCOMPort";
             this.txtCOMPort.Size = new System.Drawing.Size(55, 20);
             this.txtCOMPort.TabIndex = 1;
-            this.txtCOMPort.Text = "COM4";
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(12, 32);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(75, 23);
-            this.btnConnect.TabIndex = 2;
-            this.btnConnect.Text = "Connect";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
-            // 
-            // btnDisconnect
-            // 
-            this.btnDisconnect.Enabled = false;
-            this.btnDisconnect.Location = new System.Drawing.Point(93, 32);
-            this.btnDisconnect.Name = "btnDisconnect";
-            this.btnDisconnect.Size = new System.Drawing.Size(75, 23);
-            this.btnDisconnect.TabIndex = 3;
-            this.btnDisconnect.Text = "Disconnect";
-            this.btnDisconnect.UseVisualStyleBackColor = true;
-            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
+            this.txtCOMPort.Text = "COM3";
             // 
             // serialPort1
             // 
             this.serialPort1.BaudRate = 115200;
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
-            // panel1
+            // txtDrawNumber
             // 
-            this.panel1.BackColor = System.Drawing.Color.LightGray;
-            this.panel1.Controls.Add(this.btnDisconnect);
-            this.panel1.Controls.Add(this.chkEnableDraw);
-            this.panel1.Controls.Add(this.btnConnect);
-            this.panel1.Controls.Add(this.tblMatrix);
-            this.panel1.Controls.Add(this.btnGameLife);
-            this.panel1.Controls.Add(this.cmbRotation);
-            this.panel1.Controls.Add(this.btnRotate);
-            this.panel1.Controls.Add(this.btnSetPICTime);
-            this.panel1.Controls.Add(this.btnDrawNumber);
-            this.panel1.Controls.Add(this.txtDrawNumber);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(188, 360);
-            this.panel1.TabIndex = 4;
+            this.txtDrawNumber.Location = new System.Drawing.Point(140, 62);
+            this.txtDrawNumber.Name = "txtDrawNumber";
+            this.txtDrawNumber.Size = new System.Drawing.Size(36, 20);
+            this.txtDrawNumber.TabIndex = 1;
+            this.txtDrawNumber.Text = "0";
+            // 
+            // btnDrawNumber
+            // 
+            this.btnDrawNumber.Location = new System.Drawing.Point(12, 61);
+            this.btnDrawNumber.Name = "btnDrawNumber";
+            this.btnDrawNumber.Size = new System.Drawing.Size(114, 23);
+            this.btnDrawNumber.TabIndex = 2;
+            this.btnDrawNumber.Text = "Draw this number:";
+            this.btnDrawNumber.UseVisualStyleBackColor = true;
+            this.btnDrawNumber.Click += new System.EventHandler(this.btnDrawNumber_Click);
+            // 
+            // btnSetPICTime
+            // 
+            this.btnSetPICTime.Location = new System.Drawing.Point(12, 90);
+            this.btnSetPICTime.Name = "btnSetPICTime";
+            this.btnSetPICTime.Size = new System.Drawing.Size(164, 23);
+            this.btnSetPICTime.TabIndex = 4;
+            this.btnSetPICTime.Text = "Set PIC time";
+            this.btnSetPICTime.UseVisualStyleBackColor = true;
+            this.btnSetPICTime.Click += new System.EventHandler(this.btnSetPICTime_Click);
+            // 
+            // btnRotate
+            // 
+            this.btnRotate.Location = new System.Drawing.Point(12, 119);
+            this.btnRotate.Name = "btnRotate";
+            this.btnRotate.Size = new System.Drawing.Size(114, 23);
+            this.btnRotate.TabIndex = 5;
+            this.btnRotate.Text = "Set Rotation";
+            this.btnRotate.UseVisualStyleBackColor = true;
+            this.btnRotate.Click += new System.EventHandler(this.btnRotate_Click);
+            // 
+            // cmbRotation
+            // 
+            this.cmbRotation.FormattingEnabled = true;
+            this.cmbRotation.Items.AddRange(new object[] {
+            "0°",
+            "90°",
+            "180°",
+            "270°"});
+            this.cmbRotation.Location = new System.Drawing.Point(132, 121);
+            this.cmbRotation.Name = "cmbRotation";
+            this.cmbRotation.Size = new System.Drawing.Size(44, 21);
+            this.cmbRotation.TabIndex = 6;
+            // 
+            // btnGameLife
+            // 
+            this.btnGameLife.Location = new System.Drawing.Point(12, 148);
+            this.btnGameLife.Name = "btnGameLife";
+            this.btnGameLife.Size = new System.Drawing.Size(164, 23);
+            this.btnGameLife.TabIndex = 7;
+            this.btnGameLife.Text = "Game of Life =)";
+            this.btnGameLife.UseVisualStyleBackColor = true;
+            this.btnGameLife.Click += new System.EventHandler(this.btnGameLife_Click);
             // 
             // tblMatrix
             // 
@@ -173,7 +197,7 @@
             this.tblMatrix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tblMatrix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tblMatrix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblMatrix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tblMatrix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tblMatrix.Controls.Add(this.label51, 0, 6);
             this.tblMatrix.Controls.Add(this.label50, 0, 6);
             this.tblMatrix.Controls.Add(this.label49, 0, 6);
@@ -224,7 +248,7 @@
             this.tblMatrix.Controls.Add(this.label4, 0, 0);
             this.tblMatrix.Controls.Add(this.label3, 0, 0);
             this.tblMatrix.ForeColor = System.Drawing.Color.Yellow;
-            this.tblMatrix.Location = new System.Drawing.Point(19, 201);
+            this.tblMatrix.Location = new System.Drawing.Point(19, 292);
             this.tblMatrix.Name = "tblMatrix";
             this.tblMatrix.RowCount = 7;
             this.tblMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -240,69 +264,8 @@
             this.tblMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tblMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tblMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblMatrix.Size = new System.Drawing.Size(149, 148);
+            this.tblMatrix.Size = new System.Drawing.Size(152, 148);
             this.tblMatrix.TabIndex = 8;
-            // 
-            // btnGameLife
-            // 
-            this.btnGameLife.Location = new System.Drawing.Point(12, 148);
-            this.btnGameLife.Name = "btnGameLife";
-            this.btnGameLife.Size = new System.Drawing.Size(114, 23);
-            this.btnGameLife.TabIndex = 7;
-            this.btnGameLife.Text = "Game of Life =)";
-            this.btnGameLife.UseVisualStyleBackColor = true;
-            this.btnGameLife.Click += new System.EventHandler(this.btnGameLife_Click);
-            // 
-            // cmbRotation
-            // 
-            this.cmbRotation.FormattingEnabled = true;
-            this.cmbRotation.Items.AddRange(new object[] {
-            "0°",
-            "90°",
-            "180°",
-            "270°"});
-            this.cmbRotation.Location = new System.Drawing.Point(132, 121);
-            this.cmbRotation.Name = "cmbRotation";
-            this.cmbRotation.Size = new System.Drawing.Size(44, 21);
-            this.cmbRotation.TabIndex = 6;
-            // 
-            // btnRotate
-            // 
-            this.btnRotate.Location = new System.Drawing.Point(12, 119);
-            this.btnRotate.Name = "btnRotate";
-            this.btnRotate.Size = new System.Drawing.Size(114, 23);
-            this.btnRotate.TabIndex = 5;
-            this.btnRotate.Text = "Set Rotation";
-            this.btnRotate.UseVisualStyleBackColor = true;
-            this.btnRotate.Click += new System.EventHandler(this.btnRotate_Click);
-            // 
-            // btnSetPICTime
-            // 
-            this.btnSetPICTime.Location = new System.Drawing.Point(12, 90);
-            this.btnSetPICTime.Name = "btnSetPICTime";
-            this.btnSetPICTime.Size = new System.Drawing.Size(114, 23);
-            this.btnSetPICTime.TabIndex = 4;
-            this.btnSetPICTime.Text = "Set PIC time";
-            this.btnSetPICTime.UseVisualStyleBackColor = true;
-            this.btnSetPICTime.Click += new System.EventHandler(this.btnSetPICTime_Click);
-            // 
-            // btnDrawNumber
-            // 
-            this.btnDrawNumber.Location = new System.Drawing.Point(12, 61);
-            this.btnDrawNumber.Name = "btnDrawNumber";
-            this.btnDrawNumber.Size = new System.Drawing.Size(114, 23);
-            this.btnDrawNumber.TabIndex = 2;
-            this.btnDrawNumber.Text = "Draw this number:";
-            this.btnDrawNumber.UseVisualStyleBackColor = true;
-            this.btnDrawNumber.Click += new System.EventHandler(this.btnDrawNumber_Click);
-            // 
-            // txtDrawNumber
-            // 
-            this.txtDrawNumber.Location = new System.Drawing.Point(132, 63);
-            this.txtDrawNumber.Name = "txtDrawNumber";
-            this.txtDrawNumber.Size = new System.Drawing.Size(44, 20);
-            this.txtDrawNumber.TabIndex = 1;
-            this.txtDrawNumber.Text = "0";
             // 
             // label3
             // 
@@ -346,7 +309,7 @@
             this.label6.Font = new System.Drawing.Font("Webdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.label6.Location = new System.Drawing.Point(130, 1);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(15, 20);
+            this.label6.Size = new System.Drawing.Size(18, 20);
             this.label6.TabIndex = 4;
             this.label6.Text = "b";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -418,7 +381,7 @@
             this.label12.Font = new System.Drawing.Font("Webdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.label12.Location = new System.Drawing.Point(130, 22);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(15, 20);
+            this.label12.Size = new System.Drawing.Size(18, 20);
             this.label12.TabIndex = 10;
             this.label12.Text = "b";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -502,7 +465,7 @@
             this.label19.Font = new System.Drawing.Font("Webdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.label19.Location = new System.Drawing.Point(130, 43);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(15, 20);
+            this.label19.Size = new System.Drawing.Size(18, 20);
             this.label19.TabIndex = 17;
             this.label19.Text = "b";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -610,7 +573,7 @@
             this.label28.Font = new System.Drawing.Font("Webdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.label28.Location = new System.Drawing.Point(130, 64);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(15, 20);
+            this.label28.Size = new System.Drawing.Size(18, 20);
             this.label28.TabIndex = 26;
             this.label28.Text = "b";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -670,7 +633,7 @@
             this.label33.Font = new System.Drawing.Font("Webdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.label33.Location = new System.Drawing.Point(130, 85);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(15, 20);
+            this.label33.Size = new System.Drawing.Size(18, 20);
             this.label33.TabIndex = 31;
             this.label33.Text = "b";
             this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -754,7 +717,7 @@
             this.label40.Font = new System.Drawing.Font("Webdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.label40.Location = new System.Drawing.Point(130, 106);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(15, 20);
+            this.label40.Size = new System.Drawing.Size(18, 20);
             this.label40.TabIndex = 38;
             this.label40.Text = "b";
             this.label40.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -850,7 +813,7 @@
             this.label48.Font = new System.Drawing.Font("Webdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
             this.label48.Location = new System.Drawing.Point(130, 127);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(15, 20);
+            this.label48.Size = new System.Drawing.Size(18, 20);
             this.label48.TabIndex = 46;
             this.label48.Text = "b";
             this.label48.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -892,24 +855,103 @@
             this.label51.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label51.Click += new System.EventHandler(this.LED_Click);
             // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(12, 32);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(75, 23);
+            this.btnConnect.TabIndex = 2;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
             // chkEnableDraw
             // 
             this.chkEnableDraw.AutoSize = true;
-            this.chkEnableDraw.Location = new System.Drawing.Point(35, 179);
+            this.chkEnableDraw.Location = new System.Drawing.Point(36, 269);
             this.chkEnableDraw.Name = "chkEnableDraw";
             this.chkEnableDraw.Size = new System.Drawing.Size(118, 17);
             this.chkEnableDraw.TabIndex = 9;
             this.chkEnableDraw.Text = "Enable Matrix Draw";
             this.chkEnableDraw.UseVisualStyleBackColor = true;
             // 
+            // btnDisconnect
+            // 
+            this.btnDisconnect.Enabled = false;
+            this.btnDisconnect.Location = new System.Drawing.Point(101, 32);
+            this.btnDisconnect.Name = "btnDisconnect";
+            this.btnDisconnect.Size = new System.Drawing.Size(75, 23);
+            this.btnDisconnect.TabIndex = 3;
+            this.btnDisconnect.Text = "Disconnect";
+            this.btnDisconnect.UseVisualStyleBackColor = true;
+            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
+            // 
+            // btnPlotFFT
+            // 
+            this.btnPlotFFT.Location = new System.Drawing.Point(12, 235);
+            this.btnPlotFFT.Name = "btnPlotFFT";
+            this.btnPlotFFT.Size = new System.Drawing.Size(164, 23);
+            this.btnPlotFFT.TabIndex = 10;
+            this.btnPlotFFT.Text = "Plot FFT";
+            this.btnPlotFFT.UseVisualStyleBackColor = true;
+            this.btnPlotFFT.Click += new System.EventHandler(this.btnPlotFFT_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 185);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "FFT Level (dB):";
+            // 
+            // txtFFTLevel
+            // 
+            this.txtFFTLevel.Location = new System.Drawing.Point(98, 182);
+            this.txtFFTLevel.Name = "txtFFTLevel";
+            this.txtFFTLevel.Size = new System.Drawing.Size(46, 20);
+            this.txtFFTLevel.TabIndex = 12;
+            this.txtFFTLevel.Text = "-12.0";
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(12, 212);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(108, 13);
+            this.label52.TabIndex = 13;
+            this.label52.Text = "Max frequency (kHz):";
+            // 
+            // txtMaxFrequency
+            // 
+            this.txtMaxFrequency.Location = new System.Drawing.Point(125, 209);
+            this.txtMaxFrequency.Name = "txtMaxFrequency";
+            this.txtMaxFrequency.Size = new System.Drawing.Size(50, 20);
+            this.txtMaxFrequency.TabIndex = 14;
+            this.txtMaxFrequency.Text = "5.0";
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(188, 360);
+            this.ClientSize = new System.Drawing.Size(188, 449);
+            this.Controls.Add(this.txtMaxFrequency);
+            this.Controls.Add(this.label52);
+            this.Controls.Add(this.txtFFTLevel);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.tblMatrix);
+            this.Controls.Add(this.chkEnableDraw);
+            this.Controls.Add(this.btnPlotFFT);
+            this.Controls.Add(this.btnDisconnect);
             this.Controls.Add(this.txtCOMPort);
+            this.Controls.Add(this.btnGameLife);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.cmbRotation);
+            this.Controls.Add(this.btnConnect);
+            this.Controls.Add(this.btnRotate);
+            this.Controls.Add(this.btnDrawNumber);
+            this.Controls.Add(this.btnSetPICTime);
+            this.Controls.Add(this.txtDrawNumber);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -918,8 +960,6 @@
             this.Text = "Form1";
             this.TransparencyKey = System.Drawing.Color.LightGray;
             this.Load += new System.EventHandler(this.Main_Form_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.tblMatrix.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -930,15 +970,12 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtCOMPort;
-        private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.Button btnDisconnect;
-        private System.Windows.Forms.Panel panel1;
         public System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.TextBox txtDrawNumber;
         private System.Windows.Forms.Button btnDrawNumber;
         private System.Windows.Forms.Button btnSetPICTime;
-        private System.Windows.Forms.ComboBox cmbRotation;
         private System.Windows.Forms.Button btnRotate;
+        private System.Windows.Forms.ComboBox cmbRotation;
         private System.Windows.Forms.Button btnGameLife;
         private System.Windows.Forms.TableLayoutPanel tblMatrix;
         private System.Windows.Forms.Label label51;
@@ -990,7 +1027,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.CheckBox chkEnableDraw;
+        private System.Windows.Forms.Button btnDisconnect;
+        private System.Windows.Forms.Button btnPlotFFT;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtFFTLevel;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.TextBox txtMaxFrequency;
     }
 }
 

@@ -5,7 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Timers;
 
 namespace LED_Matrix_CDC
 {
@@ -38,6 +38,31 @@ namespace LED_Matrix_CDC
         };
 
         const Int32 OUT_BUFFER_SIZE = 64;
+
+        static NAudio_Ctrl naudio = new NAudio_Ctrl();
+
+        static Timer tmrDrawFFT = new Timer();
+
+        const int TMR_AUDIO_FFT = 10;
+        const int FFT_POWER = 10;
+        static int MIN_SAMPLES_FOR_FFT = (int)Math.Pow(2D, (Double)FFT_POWER);
+        static double MAX_FREQ_TO_PLOT = 12000D;
+        static Double AMPLITUDE_LIMIT_PER_LED = (1 / 7D);
+
+        /**********************************************************************************************************************************************/
+        /* Types */
+
+        private struct Point
+        {
+            public Double x;
+            public Double y;
+
+            public Point(Double x, Double y)
+            {
+                this.x = x;
+                this.y = y;
+            }
+        };
 
         /**********************************************************************************************************************************************/
         /* Methods */
@@ -138,7 +163,11 @@ namespace LED_Matrix_CDC
                     }
                 }
             }
-            main_form.serialPort1.Write(usb_buffer, 0, usb_buffer.Length);
+
+            if (main_form.serialPort1.IsOpen)
+            {
+                main_form.serialPort1.Write(usb_buffer, 0, usb_buffer.Length);
+            }
         }
 
         /// <summary>
@@ -159,6 +188,173 @@ namespace LED_Matrix_CDC
             map.Add(6, 0x01);
 
             return map[band];
+        }
+
+        /// <summary>
+        /// It will enable the FFT sampling
+        /// </summary>
+        /// <param name="maxLeveldB">The highest LED will represent this level in dB (0.0 is gain 1)</param>
+        /// <param name="maxFrequency">The right most band represents this family of Hz</param>
+        public static void Enable_Audio_FFT(Double maxLeveldB, Double maxFrequency)
+        {
+            MAX_FREQ_TO_PLOT = maxFrequency;
+            AMPLITUDE_LIMIT_PER_LED = maxLeveldB;
+
+            tmrDrawFFT.Enabled = false;
+            tmrDrawFFT.Interval = TMR_AUDIO_FFT;
+            tmrDrawFFT.Elapsed += handleTmrDrawFFT;
+            naudio.Start_Audio_Capture();
+            tmrDrawFFT.Enabled = true;
+        }
+
+        /// <summary>
+        /// Disable the FFT plotting
+        /// </summary>
+        public static void Disable_Audio_FFT()
+        {
+            tmrDrawFFT.Enabled = false;
+            tmrDrawFFT.Interval = TMR_AUDIO_FFT;
+            tmrDrawFFT.Elapsed -= handleTmrDrawFFT;
+        }
+
+        /// <summary>
+        /// Time to draw an FFT
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void handleTmrDrawFFT(object sender, ElapsedEventArgs e)
+        {
+            Process_Audio_Data();
+        }
+
+        /// <summary>
+        /// Call this function whenever data has to be processed
+        /// </summary>
+        public static void Process_Audio_Data()
+        {
+            if (!naudio.isRecording())
+                return;
+
+            Int32 fft_samples = MIN_SAMPLES_FOR_FFT;
+            NAudio_Ctrl.DataInfo dataInfo;
+
+            if (!naudio.getWaveFormat(out dataInfo))
+                return;
+
+            Int32 sample_freq = dataInfo.SampleRate;
+
+            double[] audioSamples;
+            if (!naudio.getAudioSamples(out audioSamples))
+                return;
+
+            if (audioSamples.Length < fft_samples)
+                return;
+
+            /* Small data array */
+            Double[] data_r = new Double[fft_samples];
+            Double[] data_i = new Double[fft_samples];
+
+            /* Copy some data only */
+            int i = 0;
+            for (i = 0; i < fft_samples; ++i)
+            {
+                data_r[i] = audioSamples[i];
+            }
+
+            /* Apply a Hamming window */
+            Ventaneo.Hamming(data_r);
+
+            /* Get the FFT */
+            const int pot = FFT_POWER; /* 2 ^ pot = fft_samples */
+            Fourier.FFT(1, pot, data_r, data_i);
+            double[] freq_resp = new double[(fft_samples / 2) + 1];
+            for (i = 0; i < (1 + (fft_samples / 2)); ++i) /* Include the Nyquist frequency */
+            {
+                freq_resp[i] = Math.Sqrt(data_r[i] * data_r[i] + data_i[i] * data_i[i]);
+            }
+            for (i = 0; i < freq_resp.GetLength(0); ++i)
+            {
+                freq_resp[i] /= fft_samples;
+            }
+            for (i = 1; i < (freq_resp.GetLength(0) - 1); ++i)
+            {
+                freq_resp[i] *= 2;
+            }
+
+            ///* Get the max frequency values */
+            //Double[] Max_Freq_Values = null;
+            //if (Max_Freq_Values == null)
+            //{
+            //    Max_Freq_Values = new Double[(fft_samples / 2) + 1];
+            //}
+            //for (i = 0; i < (1 + (fft_samples / 2)); ++i)
+            //{
+            //    if (freq_resp[i] > Max_Freq_Values[i])
+            //    {
+            //        Max_Freq_Values[i] = freq_resp[i];
+            //    }
+            //}
+
+            /* Draw the frequency response graphic */
+            int j = 0;
+            List<Point> fxy = new List<Point>();
+            double x = 0;
+            foreach (double r in freq_resp)
+            {
+                x = sample_freq / (double)fft_samples * (double)j++;
+                fxy.Add(new Point(x, r));
+            }
+
+            ///* Draw the max frequency response graphic */
+            //j = 0;
+            //PointPairList fxy_max = new PointPairList();
+            //foreach (double r in naudio.Max_Freq_Values)
+            //{
+            //    x = sample_freq / (double)fft_samples * (double)j++;
+            //    fxy_max.Add(x, r);
+            //}
+
+            /* Group data into bands */
+            const int bands = 7;
+            Double[] band_limits = new Double[bands];
+            for (i = 0; i < bands; ++i)
+            {
+                band_limits[i] = (MAX_FREQ_TO_PLOT / bands) * (Double)(i + 1);
+            }
+
+            Double[] band_data = new Double[bands];
+            j = 0; /* Frequency index */
+            for (i = 0; i < bands; ++i)
+            {
+                while (fxy[j].x < band_limits[i])
+                {
+                    band_data[i] += fxy[j].y;
+                    ++j;
+                }
+            }
+
+            /* Calculate the limits of each band for each LED */
+            Double[] led_limits = new Double[7];
+            for (i = 0; i < 7; ++i)
+            {
+                led_limits[i] = AMPLITUDE_LIMIT_PER_LED * ((Double)i + 1);
+            }
+
+            /* LED matrix */
+            Boolean[,] led_matrix = new Boolean[7, 7];
+
+            for (int band = 0; band < 7; ++band)
+            {
+                for (int level = 0; level < 7; ++level)
+                {
+                    if (band_data[band] > led_limits[level])
+                    {
+                        led_matrix[band, level] = true;
+                    }
+                }
+            }
+
+            Draw_Raw_Frame(led_matrix);
         }
     }
 }
